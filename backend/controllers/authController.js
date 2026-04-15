@@ -18,6 +18,7 @@
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Department = require('../models/Department');
 
 // ============================================
 // Helper: Generate JWT Token
@@ -148,4 +149,57 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe };
+// ============================================
+// @desc    Create a new user by Admin
+// @route   POST /api/auth/create-user
+// @access  Private/Admin
+// ============================================
+const createUser = async (req, res) => {
+  try {
+    const { name, email, password, role, department } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists with this email' });
+    }
+
+    const userData = {
+      name,
+      email,
+      password,
+      role: role || 'citizen',
+    };
+
+    if (role === 'officer' && department) {
+      userData.department = department;
+    }
+
+    // Create user
+    const user = await User.create(userData);
+
+    // If role is officer, add user to department's assignedOfficers
+    if (role === 'officer' && department) {
+      await Department.findByIdAndUpdate(department, {
+        $push: { assignedOfficers: user._id }
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: `${role} account created successfully`,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        department: user.department
+      },
+    });
+  } catch (error) {
+    console.error('Create User error:', error.message);
+    res.status(500).json({ message: 'Server error during user creation' });
+  }
+};
+
+module.exports = { register, login, getMe, createUser };

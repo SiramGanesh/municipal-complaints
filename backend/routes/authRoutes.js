@@ -8,8 +8,11 @@
 
 const express = require('express');
 const router = express.Router();
-const { register, login, getMe } = require('../controllers/authController');
-const { protect } = require('../middleware/auth');
+const { register, login, getMe, createUser } = require('../controllers/authController');
+const { protect, authorize } = require('../middleware/auth');
+
+// POST /api/auth/create-user - Create new account by Admin
+router.post('/create-user', protect, authorize('admin'), createUser);
 
 // POST /api/auth/register - Create new account
 router.post('/register', register);
