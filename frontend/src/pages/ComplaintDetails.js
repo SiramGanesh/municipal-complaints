@@ -22,6 +22,8 @@ const ComplaintDetails = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState('');
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectionReasonInput, setRejectionReasonInput] = useState('');
 
   // Fetch complaint details
   useEffect(() => {
@@ -42,14 +44,19 @@ const ComplaintDetails = () => {
   }, [id]);
 
   // Update complaint status (officer/admin only)
-  const handleStatusUpdate = async (newStatus) => {
+  const handleStatusUpdate = async (newStatus, reason = null) => {
     setUpdating(true);
     try {
-      await api.put(`/complaints/${id}/status`, { status: newStatus });
+      const payload = { status: newStatus };
+      if (reason) payload.rejectionReason = reason;
+
+      await api.put(`/complaints/${id}/status`, payload);
       // Refresh the complaint data
       const response = await api.get(`/complaints/${id}`);
       setComplaint(response.data.complaint);
       setSla(response.data.sla);
+      setShowRejectModal(false);
+      setRejectionReasonInput('');
     } catch (error) {
       setError(error.response?.data?.message || 'Error updating status');
     } finally {
@@ -162,6 +169,20 @@ const ComplaintDetails = () => {
                 <strong>Last Updated:</strong> {formatDate(complaint.updatedAt)}
               </p>
             </div>
+
+            {complaint.status === 'Rejected' && (
+              <div className="mb-6 bg-red-50 p-4 rounded-md border border-red-200">
+                <h3 className="text-sm font-semibold text-red-800 uppercase mb-2">❌ Rejection Details</h3>
+                <p className="text-gray-900 mb-1">
+                  <strong>Reason:</strong> {complaint.rejectionReason}
+                </p>
+                {complaint.rejectedAt && (
+                  <p className="text-gray-900 text-sm">
+                    <strong>Rejected On:</strong> {formatDate(complaint.rejectedAt)}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Right Column - SLA & Image */}
@@ -210,7 +231,7 @@ const ComplaintDetails = () => {
               <div className="bg-white p-4 rounded-md border border-gray-300">
                 <h3 className="font-semibold mb-3">🔄 Update Status</h3>
                 <div className="flex flex-col gap-2">
-                  {complaint.status !== 'In Progress' && (
+                  {complaint.status !== 'In Progress' && complaint.status !== 'Resolved' && complaint.status !== 'Rejected' && (
                     <button
                       className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={() => handleStatusUpdate('In Progress')}
@@ -219,13 +240,22 @@ const ComplaintDetails = () => {
                       Mark In Progress
                     </button>
                   )}
-                  {complaint.status !== 'Resolved' && (
+                  {complaint.status !== 'Resolved' && complaint.status !== 'Rejected' && (
                     <button
                       className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={() => handleStatusUpdate('Resolved')}
                       disabled={updating}
                     >
                       Mark Resolved
+                    </button>
+                  )}
+                  {complaint.status !== 'Rejected' && complaint.status !== 'Resolved' && (
+                    <button
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => setShowRejectModal(true)}
+                      disabled={updating}
+                    >
+                      Reject Complaint
                     </button>
                   )}
                 </div>
@@ -257,6 +287,49 @@ const ComplaintDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Reject Complaint</h3>
+            <p className="text-gray-600 mb-4 text-sm">
+              Please provide a reason for rejecting this complaint. This message will be sent to the citizen.
+            </p>
+            <textarea
+              className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:ring-2 focus:ring-red-500 focus:border-red-500 min-h-[100px]"
+              placeholder="Reason for rejection (mandatory)..."
+              value={rejectionReasonInput}
+              onChange={(e) => setRejectionReasonInput(e.target.value)}
+            />
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                onClick={() => {
+                  setShowRejectModal(false);
+                  setRejectionReasonInput('');
+                }}
+                disabled={updating}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => {
+                  if (!rejectionReasonInput.trim()) {
+                    alert('Please enter a rejection reason.');
+                    return;
+                  }
+                  handleStatusUpdate('Rejected', rejectionReasonInput);
+                }}
+                disabled={updating || !rejectionReasonInput.trim()}
+              >
+                {updating ? 'Rejecting...' : 'Submit Rejection'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -41,8 +41,19 @@ const complaintSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Registered', 'In Progress', 'Resolved', 'Escalated'],
+    enum: ['Registered', 'In Progress', 'Resolved', 'Escalated', 'Rejected'],
     default: 'Registered', // All new complaints start as "Registered"
+  },
+  rejectionReason: {
+    type: String,
+    trim: true,
+  },
+  rejectedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  rejectedAt: {
+    type: Date,
   },
   departmentId: {
     type: mongoose.Schema.Types.ObjectId,

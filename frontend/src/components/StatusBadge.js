@@ -23,6 +23,8 @@ const StatusBadge = ({ status }) => {
         return 'inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase bg-green-100 text-green-800';
       case 'Escalated':
         return 'inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase bg-red-100 text-red-800';
+      case 'Rejected':
+        return 'inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase bg-gray-200 text-gray-800';
       default:
         return 'inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase bg-gray-100 text-gray-800';
     }

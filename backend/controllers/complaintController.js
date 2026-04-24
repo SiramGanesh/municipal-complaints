@@ -178,14 +178,18 @@ const getComplaintById = async (req, res) => {
 // ============================================
 const updateComplaintStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, rejectionReason } = req.body;
 
     // Validate status value
-    const validStatuses = ['Registered', 'In Progress', 'Resolved', 'Escalated'];
+    const validStatuses = ['Registered', 'In Progress', 'Resolved', 'Escalated', 'Rejected'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
         message: `Invalid status. Must be one of: ${validStatuses.join(', ')}`,
       });
+    }
+
+    if (status === 'Rejected' && (!rejectionReason || rejectionReason.trim() === '')) {
+      return res.status(400).json({ message: 'Rejection reason is mandatory when rejecting a complaint' });
     }
 
     // Find and update the complaint
@@ -196,6 +200,13 @@ const updateComplaintStatus = async (req, res) => {
 
     complaint.status = status;
     complaint.updatedAt = Date.now();
+
+    if (status === 'Rejected') {
+      complaint.rejectionReason = rejectionReason;
+      complaint.rejectedBy = req.user._id || req.user.id;
+      complaint.rejectedAt = Date.now();
+    }
+
     await complaint.save();
 
     // If resolved, update SLA status
@@ -209,9 +220,14 @@ const updateComplaintStatus = async (req, res) => {
     }
 
     // Send notification to the citizen about status change
+    let notificationMessage = `Your complaint "${complaint.title}" status has been updated to "${status}".`;
+    if (status === 'Rejected') {
+      notificationMessage += ` Reason: ${rejectionReason}`;
+    }
+
     await Notification.create({
       userId: complaint.userId,
-      message: `Your complaint "${complaint.title}" status has been updated to "${status}".`,
+      message: notificationMessage,
       type: 'system',
       complaintId: complaint._id,
     });
