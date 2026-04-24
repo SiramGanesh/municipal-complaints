@@ -19,6 +19,7 @@ const Complaint = require('../models/Complaint');
 const Department = require('../models/Department');
 const SLA = require('../models/SLA');
 const Notification = require('../models/Notification');
+const Escalation = require('../models/Escalation');
 
 // ============================================
 // @desc    Create a new complaint
@@ -251,8 +252,10 @@ const deleteComplaint = async (req, res) => {
 
     await Complaint.findByIdAndDelete(req.params.id);
 
-    // Also delete related SLA if it exists
+    // Also delete related SLA, Escalations, and Notifications to prevent orphans
     await SLA.findOneAndDelete({ complaintId: req.params.id });
+    await Escalation.deleteMany({ complaintId: req.params.id });
+    await Notification.deleteMany({ complaintId: req.params.id });
 
     res.json({ success: true, message: 'Complaint deleted successfully' });
   } catch (error) {

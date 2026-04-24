@@ -26,10 +26,13 @@ const getEscalations = async (req, res) => {
       })
       .sort({ escalatedAt: -1 }); // Newest first
 
+    // Filter out any orphaned escalations (where the associated complaint was deleted)
+    const validEscalations = escalations.filter(e => e.complaintId !== null);
+
     res.json({
       success: true,
-      count: escalations.length,
-      escalations,
+      count: validEscalations.length,
+      escalations: validEscalations,
     });
   } catch (error) {
     console.error('Get escalations error:', error.message);
