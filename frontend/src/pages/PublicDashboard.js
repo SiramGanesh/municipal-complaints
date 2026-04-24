@@ -67,66 +67,66 @@ const PublicDashboard = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold mb-4">📊 Public Transparency Dashboard</h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+      <div className="text-center mb-16 mt-8">
+        <h1 className="text-4xl font-extrabold mb-4 text-gray-900 tracking-tight">Public Transparency Dashboard</h1>
+        <p className="text-gray-500 font-medium max-w-2xl mx-auto text-lg">
           Real-time statistics of municipal complaint management.
           This dashboard is accessible to everyone to promote transparency.
         </p>
       </div>
 
       {/* Main Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-blue-500">
-          <h3 className="text-3xl font-bold mb-2">{stats.totalComplaints}</h3>
-          <p className="text-gray-600">Total Complaints</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+        <div className="bg-white p-8 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300">
+          <h3 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">{stats.totalComplaints}</h3>
+          <p className="text-gray-500 font-semibold text-sm uppercase tracking-wide">Total</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-green-500">
-          <h3 className="text-3xl font-bold mb-2">{stats.resolved}</h3>
-          <p className="text-gray-600">Resolved</p>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300">
+          <h3 className="text-4xl font-extrabold mb-2 text-brand-600 tracking-tight">{stats.resolved}</h3>
+          <p className="text-gray-500 font-semibold text-sm uppercase tracking-wide">Resolved</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-yellow-500">
-          <h3 className="text-3xl font-bold mb-2">{stats.inProgress}</h3>
-          <p className="text-gray-600">In Progress</p>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300">
+          <h3 className="text-4xl font-extrabold mb-2 text-yellow-600 tracking-tight">{stats.inProgress}</h3>
+          <p className="text-gray-500 font-semibold text-sm uppercase tracking-wide">In Progress</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-red-500">
-          <h3 className="text-3xl font-bold mb-2">{stats.escalated}</h3>
-          <p className="text-gray-600">Escalated</p>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300">
+          <h3 className="text-4xl font-extrabold mb-2 text-red-500 tracking-tight">{stats.escalated}</h3>
+          <p className="text-gray-500 font-semibold text-sm uppercase tracking-wide">Escalated</p>
         </div>
       </div>
 
       {/* Resolution Rate */}
-      <div className="bg-white p-8 rounded-lg shadow-md text-center mb-8">
-        <h2 className="text-2xl font-bold mb-6">Overall Resolution Rate</h2>
-        <div className="mb-6">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-green-400 to-green-600 rounded-full text-white text-2xl font-bold">
+      <div className="bg-white p-10 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100 text-center mb-10 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
+        <h2 className="text-2xl font-extrabold mb-6 text-gray-900 tracking-tight">Overall Resolution Rate</h2>
+        <div className="mb-8">
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-gradient-to-tr from-brand-500 to-brand-400 rounded-full text-white text-3xl font-extrabold shadow-lg shadow-brand-500/30">
             {stats.resolutionRate}
           </div>
         </div>
-        <div className="w-full max-w-md mx-auto bg-gray-200 rounded-full h-4">
+        <div className="w-full max-w-md mx-auto bg-gray-100 rounded-full h-3 overflow-hidden">
           <div
-            className="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all duration-1000"
+            className="bg-brand-500 h-full rounded-full transition-all duration-1000 ease-out"
             style={{ width: stats.resolutionRate }}
           ></div>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 mb-8">
+      <div className="grid md:grid-cols-2 gap-8 mb-10">
         {/* Complaints by Type */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">📊 Complaints by Issue Type</h2>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100">
+          <h2 className="text-xl font-extrabold mb-6 text-gray-900 tracking-tight">Complaints by Issue Type</h2>
           {stats.complaintsByType.length === 0 ? (
-            <p className="text-gray-600">No data available yet.</p>
+            <p className="text-gray-500 font-medium">No data available yet.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {stats.complaintsByType.map((item) => (
-                <div key={item._id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                  <span className="text-2xl">{getIssueEmoji(item._id)}</span>
-                  <span className="flex-1 font-medium capitalize">{item._id}</span>
-                  <span className="font-bold text-blue-600">{item.count}</span>
-                  <div className="w-20 bg-gray-200 rounded-full h-2">
+                <div key={item._id} className="flex items-center gap-4 p-4 bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-gray-50 transition-colors">
+                  <span className="text-3xl bg-white w-12 h-12 flex items-center justify-center rounded-xl shadow-sm">{getIssueEmoji(item._id)}</span>
+                  <span className="flex-1 font-semibold text-gray-900 capitalize">{item._id}</span>
+                  <span className="font-extrabold text-brand-600 text-lg">{item.count}</span>
+                  <div className="w-24 bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="bg-brand-500 h-full rounded-full"
                       style={{
                         width: `${(item.count / stats.totalComplaints) * 100}%`,
                       }}
@@ -139,34 +139,34 @@ const PublicDashboard = () => {
         </div>
 
         {/* Department Performance */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">🏢 Department Performance</h2>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100">
+          <h2 className="text-xl font-extrabold mb-6 text-gray-900 tracking-tight">Department Performance</h2>
           {stats.departmentPerformance.length === 0 ? (
-            <p className="text-gray-600">No data available yet.</p>
+            <p className="text-gray-500 font-medium">No data available yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 font-semibold text-gray-700">Department</th>
-                    <th className="text-center py-2 font-semibold text-gray-700">Total</th>
-                    <th className="text-center py-2 font-semibold text-gray-700">Resolved</th>
-                    <th className="text-center py-2 font-semibold text-gray-700">Rate</th>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left py-3 font-bold text-gray-400 uppercase text-xs tracking-wider">Department</th>
+                    <th className="text-center py-3 font-bold text-gray-400 uppercase text-xs tracking-wider">Total</th>
+                    <th className="text-center py-3 font-bold text-gray-400 uppercase text-xs tracking-wider">Resolved</th>
+                    <th className="text-center py-3 font-bold text-gray-400 uppercase text-xs tracking-wider">Rate</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-50">
                   {stats.departmentPerformance.map((dept) => (
-                    <tr key={dept._id} className="border-b border-gray-100">
-                      <td className="py-3">{dept._id}</td>
-                      <td className="text-center py-3">{dept.total}</td>
-                      <td className="text-center py-3 text-green-600 font-semibold">{dept.resolved}</td>
-                      <td className="text-center py-3">
+                    <tr key={dept._id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="py-4 font-semibold text-gray-900">{dept._id}</td>
+                      <td className="text-center py-4 font-medium text-gray-600">{dept.total}</td>
+                      <td className="text-center py-4 text-brand-600 font-bold">{dept.resolved}</td>
+                      <td className="text-center py-4">
                         <span
-                          className={
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
                             dept.total > 0 && dept.resolved / dept.total >= 0.5
-                              ? 'text-green-600 font-semibold'
-                              : 'text-red-600 font-semibold'
-                          }
+                              ? 'bg-brand-50 text-brand-700'
+                              : 'bg-red-50 text-red-700'
+                          }`}
                         >
                           {dept.total > 0
                             ? `${((dept.resolved / dept.total) * 100).toFixed(0)}%`

@@ -57,7 +57,7 @@ const HomeRedirect = () => {
     );
   }
 
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/public-dashboard" />;
 
   // Redirect based on role
   switch (user.role) {
@@ -77,7 +77,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen flex flex-col">
           {/* Navbar - shown on all pages */}
           <Navbar />
 

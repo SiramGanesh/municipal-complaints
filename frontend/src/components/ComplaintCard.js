@@ -59,17 +59,17 @@ const ComplaintCard = ({ complaint, onDelete }) => {
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-3xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-gray-100 overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300">
       {/* Card Header */}
-      <div className="flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200">
+      <div className="flex justify-between items-center px-6 py-4 border-b border-gray-50">
         <span className="text-sm font-medium text-gray-700">{getIssueTypeLabel(complaint.issueType)}</span>
         <StatusBadge status={complaint.status} />
       </div>
 
       {/* Card Body */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2 text-gray-900">{complaint.title}</h3>
-        <p className="text-gray-600 text-sm mb-3">
+      <div className="px-6 py-5">
+        <h3 className="text-xl font-extrabold mb-2 text-gray-900 tracking-tight">{complaint.title}</h3>
+        <p className="text-gray-500 font-medium text-sm mb-4 leading-relaxed">
           {complaint.description.length > 100
             ? complaint.description.substring(0, 100) + '...'
             : complaint.description}
@@ -85,8 +85,8 @@ const ComplaintCard = ({ complaint, onDelete }) => {
       </div>
 
       {/* Card Footer */}
-      <div className="p-4 border-t border-gray-200 flex justify-between items-center">
-        <Link to={`/complaints/${complaint._id}`} className="inline-block bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors text-sm">
+      <div className="px-6 py-4 border-t border-gray-50 flex justify-between items-center bg-gray-50/30">
+        <Link to={`/complaints/${complaint._id}`} className="inline-block bg-white border border-gray-200 text-gray-700 px-5 py-2 rounded-full hover:border-gray-300 hover:text-gray-900 shadow-sm transition-all text-sm font-bold">
           View Details →
         </Link>
         {isCreator && complaint.status !== 'Resolved' && (
